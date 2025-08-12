@@ -19,9 +19,17 @@ export default function Home() {
         <div style={{ fontWeight: "bold", fontSize: "24px" }}>-</div>
         {listType === "inProgress" ? <div>{item}</div> : <s>{item}</s>}
         {listType === "inProgress" && (
-          <button style={{ marginLeft: "auto", backgroundColor: "#ccff00", borderColor: "#a7cf04ff", color: "black", fontWeight: "bold" }} className="btn btn-secondary" onClick={() => handleFinished(index)}>
-            ✓
-          </button>
+          <div style={{ marginLeft: "auto", display: "flex", gap: "6px" }}>
+            <button style={{ color: "black", fontWeight: "bold" }} className="btn btn-secondary" onClick={() => handleMove(index, "up")}>
+              🢁
+            </button>
+            <button style={{ color: "black", fontWeight: "bold" }} className="btn btn-secondary" onClick={() => handleMove(index, "down")}>
+              🡻
+            </button>
+            <button style={{ backgroundColor: "#ccff00", borderColor: "#a7cf04ff", color: "black", fontWeight: "bold" }} className="btn btn-secondary" onClick={() => handleFinished(index)}>
+              ✓
+            </button>
+          </div>
         )}
         <button style={listType === "finished" ? { marginLeft: "auto", color: "black" } : { color: "black" }} className="btn btn-danger" onClick={() => handleRemove(index, listType)}>
           x
@@ -41,6 +49,24 @@ export default function Home() {
     } else {
       setFinished((prev) => prev.filter((_, i) => i !== index));
     }
+  };
+
+  const handleMove = (index: number, direction: "up" | "down") => {
+    const tempArray = [...inProgress];
+    if (direction == "up") {
+      if (index - 1 >= 0) {
+        let tempVal = tempArray[index - 1];
+        tempArray[index - 1] = tempArray[index];
+        tempArray[index] = tempVal;
+      }
+    } else if (direction == "down") {
+      if (index + 1 < tempArray.length) {
+        let tempVal = tempArray[index + 1];
+        tempArray[index + 1] = tempArray[index];
+        tempArray[index] = tempVal;
+      }
+    }
+    setInProgress(tempArray);
   };
 
   return (
