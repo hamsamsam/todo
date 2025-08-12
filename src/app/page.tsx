@@ -10,14 +10,22 @@ export default function Home() {
 
   const handleAdd = () => {
     setInProgress([...inProgress, userInput]);
+    setInput("");
   };
 
   const getList = (inputArray: string[], listType: "inProgress" | "finished") => {
     return inputArray.map((item, index) => (
       <li key={index}>
-        {item}
+        {listType === "inProgress" ? (
+          <span>
+            <h4>{item}</h4> <button onClick={() => handleFinished(index)}> done </button>
+          </span>
+        ) : (
+          <h4>
+            <s>{item}</s>
+          </h4>
+        )}
         <button onClick={() => handleRemove(index, listType)}>x</button>
-        {listType === "inProgress" && <button onClick={() => handleFinished(index)}> done </button>}
       </li>
     ));
   };
@@ -39,7 +47,7 @@ export default function Home() {
     <div>
       <h1>TO-DO APP</h1>
       <span>
-        <input type="text" onChange={(e) => setInput(e.target.value)} placeholder="Input here..."></input>
+        <input type="text" onChange={(e) => setInput(e.target.value)} value={userInput}></input>
         <button onClick={handleAdd} type="button">
           +
         </button>
