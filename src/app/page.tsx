@@ -12,8 +12,27 @@ export default function Home() {
     setInProgress([...inProgress, userInput]);
   };
 
-  const getList = (inputArray: string[]) => {
-    return inputArray.map((item, index) => <li key={index}>{item}</li>);
+  const getList = (inputArray: string[], listType: "inProgress" | "finished") => {
+    return inputArray.map((item, index) => (
+      <li key={index}>
+        {item}
+        <button onClick={() => handleRemove(index, listType)}>x</button>
+        {listType === "inProgress" && <button onClick={() => handleFinished(index)}> done </button>}
+      </li>
+    ));
+  };
+
+  const handleFinished = (index: number) => {
+    handleRemove(index, "inProgress");
+    setFinished([...finished, inProgress[index]]);
+  };
+
+  const handleRemove = (index: number, listType: "inProgress" | "finished") => {
+    if (listType == "inProgress") {
+      setInProgress((prev) => prev.filter((_, i) => i !== index));
+    } else {
+      setFinished((prev) => prev.filter((_, i) => i !== index));
+    }
   };
 
   return (
@@ -26,9 +45,9 @@ export default function Home() {
         </button>
       </span>
       <h2>In-progress</h2>
-      <ul className="list-group">{getList(inProgress)}</ul>
+      <ul className="list-group">{getList(inProgress, "inProgress")}</ul>
       <h2>Completed</h2>
-      <ul className="list-group">{getList(finished)}</ul>
+      <ul className="list-group">{getList(finished, "finished")}</ul>
     </div>
   );
 }
