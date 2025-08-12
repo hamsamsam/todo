@@ -15,17 +15,17 @@ export default function Home() {
 
   const getList = (inputArray: string[], listType: "inProgress" | "finished") => {
     return inputArray.map((item, index) => (
-      <li key={index}>
-        {listType === "inProgress" ? (
-          <span>
-            <h4>{item}</h4> <button onClick={() => handleFinished(index)}> done </button>
-          </span>
-        ) : (
-          <h4>
-            <s>{item}</s>
-          </h4>
+      <li className="mb-2" key={index} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <div style={{ fontWeight: "bold", fontSize: "24px" }}>-</div>
+        {listType === "inProgress" ? <div>{item}</div> : <s>{item}</s>}
+        {listType === "inProgress" && (
+          <button style={{ marginLeft: "auto", backgroundColor: "#ccff00", borderColor: "#a7cf04ff", color: "black", fontWeight: "bold" }} className="btn btn-secondary" onClick={() => handleFinished(index)}>
+            ✓
+          </button>
         )}
-        <button onClick={() => handleRemove(index, listType)}>x</button>
+        <button style={listType === "finished" ? { marginLeft: "auto", color: "black" } : { color: "black" }} className="btn btn-danger" onClick={() => handleRemove(index, listType)}>
+          x
+        </button>
       </li>
     ));
   };
@@ -44,18 +44,22 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <div className="mx-70 my-10" style={{ height: "100vh", width: "100vw" }}>
       <h1>TO-DO APP</h1>
-      <span>
-        <input type="text" onChange={(e) => setInput(e.target.value)} value={userInput}></input>
-        <button onClick={handleAdd} type="button">
-          +
+      <div className="d-flex mb-4">
+        <input className="form-control me-2" style={{ width: "60%" }} type="text" onChange={(e) => setInput(e.target.value)} value={userInput}></input>
+        <button onClick={handleAdd} type="button" className="btn btn-light" style={{ backgroundColor: "#ccff00", borderColor: "#a7cf04ff" }}>
+          <b>+</b>
         </button>
-      </span>
+      </div>
       <h2>In-progress</h2>
-      <ul className="list-group">{getList(inProgress, "inProgress")}</ul>
+      <ul className="list-group mb-4" style={{ borderColor: "white", borderWidth: "2px", minHeight: "20%", maxWidth: "62%", padding: "25px" }}>
+        {getList(inProgress, "inProgress")}
+      </ul>
       <h2>Completed</h2>
-      <ul className="list-group">{getList(finished, "finished")}</ul>
+      <ul className="list-group" style={{ borderColor: "white", borderWidth: "2px", minHeight: "20%", maxWidth: "62%", padding: "25px" }}>
+        {getList(finished, "finished")}
+      </ul>
     </div>
   );
 }
