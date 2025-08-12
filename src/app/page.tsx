@@ -2,21 +2,25 @@
 import { useState } from "react";
 
 export default function Home() {
+  // arrays to store the tasks
   const [inProgress, setInProgress] = useState<string[]>([]);
 
   const [finished, setFinished] = useState<string[]>([]);
 
   const [userInput, setInput] = useState<string>("");
 
+  //add to in progress when new task is added
   const handleAdd = () => {
     setInProgress([...inProgress, userInput]);
     setInput("");
   };
 
+  //display the list asked
   const getList = (inputArray: string[], listType: "inProgress" | "finished") => {
     return inputArray.map((item, index) => (
       <li className="mb-2" key={index} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
         <div style={{ fontWeight: "bold", fontSize: "24px" }}>-</div>
+        {/* some buttons only appear if the list is inProgress */}
         {listType === "inProgress" ? <div>{item}</div> : <s>{item}</s>}
         {listType === "inProgress" && (
           <div style={{ marginLeft: "auto", display: "flex", gap: "6px" }}>
@@ -38,11 +42,13 @@ export default function Home() {
     ));
   };
 
+  //add to finished list
   const handleFinished = (index: number) => {
     handleRemove(index, "inProgress");
     setFinished([...finished, inProgress[index]]);
   };
 
+  //remove item from the list that is asked
   const handleRemove = (index: number, listType: "inProgress" | "finished") => {
     if (listType == "inProgress") {
       setInProgress((prev) => prev.filter((_, i) => i !== index));
@@ -51,6 +57,7 @@ export default function Home() {
     }
   };
 
+  //move the position of the element in the list
   const handleMove = (index: number, direction: "up" | "down") => {
     const tempArray = [...inProgress];
     if (direction == "up") {
