@@ -62,13 +62,13 @@ export default function Home() {
     const tempArray = [...inProgress];
     if (direction == "up") {
       if (index - 1 >= 0) {
-        let tempVal = tempArray[index - 1];
+        const tempVal = tempArray[index - 1];
         tempArray[index - 1] = tempArray[index];
         tempArray[index] = tempVal;
       }
     } else if (direction == "down") {
       if (index + 1 < tempArray.length) {
-        let tempVal = tempArray[index + 1];
+        const tempVal = tempArray[index + 1];
         tempArray[index + 1] = tempArray[index];
         tempArray[index] = tempVal;
       }
